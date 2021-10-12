@@ -1,11 +1,31 @@
 ---
-title: "project"
-author: "Ian Curtis, "
+title: "Proposal"
+author: "Ian Curtis, Stacy Keydel, Sarba Uprety"
 output: html_document
 ---
+# Proposal for STA 418/518
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
+```{r load_packages_data, message = FALSE}
+library(tidyverse)
+
+spotify_data <- read_csv(here::here("tracks_features.csv"))
+```
+
+Our ultimate goal is to create a Shiny app. We would like to have a searchable box where users can search for an artist and graphs and details about that artist will pop up automatically. 
+
+
+```{r}
+spotify_data %>% 
+  ggplot(aes(x = instrumentalness)) +
+    geom_histogram(binwidth = .05, fill = "red")
+```
+
+
+
 
 
