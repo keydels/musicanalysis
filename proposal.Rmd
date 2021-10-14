@@ -23,6 +23,8 @@ Our ultimate goal is to create a Shiny app. We would like to have a searchable b
 spotify_data %>% 
   ggplot(aes(x = instrumentalness)) +
     geom_histogram(binwidth = .05, fill = "red")
+
+
 ```
 
 
