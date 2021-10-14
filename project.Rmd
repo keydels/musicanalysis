@@ -1,11 +1,20 @@
 ---
 title: "project"
-author: "Ian Curtis, "
+author: "Ian Curtis, Stacy Keydel "
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+spotify_data <- read_csv(here::here("tracks_features.csv"))
+```
+
 
 
