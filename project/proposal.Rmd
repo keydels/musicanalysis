@@ -20,7 +20,7 @@ We will start by using R and the `{tidyverse}` to do an exploratory data analysi
 
 ```{r import, message=FALSE}
 library(tidyverse)
-spotify <- read_csv(here::here("tracks_features.csv"))
+spotify <- read_csv(here::here("data/tracks_features.csv"))
 ```
 
 ```{r example_plot}
