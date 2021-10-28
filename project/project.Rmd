@@ -8,29 +8,38 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r load_packages, message=FALSE}
 library(tidyverse)
 library(lubridate)
 ```
 
-```{r}
+```{r read_data, message=FALSE}
 spotify <- read_csv(here::here("data/tracks_features.csv"))
-
 ```
 
-```{r}
-spotify$artists <- str_replace(spotify$artists, "\\[\'", "")
-spotify$artists <- str_replace(spotify$artists, "\'\\]", "")
-spotify$artists <- str_replace_all(spotify$artists, "\'", "")
-spotify$artist_ids <- str_replace(spotify$artist_ids, "\\[\'", "")
-spotify$artist_ids <- str_replace(spotify$artist_ids, "\'\\]", "")
-spotify$artist_ids <- str_replace_all(spotify$artist_ids, "\'", "")
-
-```
-
-```{r}
+```{r adjust_vars}
+spotify$artists <- str_replace_all(spotify$artists, "(\\[(\'|\"))|((\'|\")\\])", "")
+spotify$artists <- str_replace_all(spotify$artists, "\',", ",")
+spotify$artists <- str_replace_all(spotify$artists, " \'", " ")
+spotify$artist_ids <- str_replace_all(spotify$artist_ids, "(\\[(\'|\"))|((\'|\")\\])", "")
+spotify$artist_ids <- str_replace_all(spotify$artists, "\',", ",")
+spotify$artists_ids <- str_replace_all(spotify$artists, " \'", " ")
 spotify$release_date <- ymd(spotify$release_date)
-
 ```
 
+```{r eda_numeric}
+funs <- c(mean = mean, median = median, max = max, min = min)
+spotify %>% 
+  select(where(is.numeric)) %>% 
+  map_df(~ funs %>%
+           map(exec, .x), .id = "var")
+# Go back to look at loudness, tempo, duration_ms, time_signature, year
+```
+
+```{r eda_loudness}
+spotify %>% 
+  filter(loudness > 5) %>% 
+  select(name, artists, loudness) %>% 
+  arrange(desc(loudness))
+```
 
