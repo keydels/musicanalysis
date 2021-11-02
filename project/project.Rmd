@@ -25,7 +25,10 @@ spotify$artist_ids <- str_replace_all(spotify$artist_ids, "(\\[(\'|\"))|((\'|\")
 spotify$artist_ids <- str_replace_all(spotify$artists, "\',", ",")
 spotify$artists_ids <- str_replace_all(spotify$artists, " \'", " ")
 spotify$release_date <- ymd(spotify$release_date)
+
 ```
+
+
 
 ```{r eda_numeric}
 funs <- c(mean = mean, median = median, max = max, min = min)
@@ -36,10 +39,69 @@ spotify %>%
 # Go back to look at loudness, tempo, duration_ms, time_signature, year
 ```
 
+```{r}
+spotify <- spotify %>% 
+  mutate(duration_s = as.duration(duration_ms) / 1000)
+```
+
 ```{r eda_loudness}
 spotify %>% 
   filter(loudness > 5) %>% 
   select(name, artists, loudness) %>% 
   arrange(desc(loudness))
+# Some songs are silent
+# Some songs are so ridiculously loud (like TV static)
+```
+
+```{r eda_tempo}
+spotify %>% 
+  filter(tempo > 200) %>% 
+  select(name, artists, tempo) %>% 
+  arrange(desc(tempo))
+#spotify %>%  ggplot(aes(x = tempo)) +
+  #geom_bar()
+# 0 tempo: some are short or have a mess of sound. Some do have a tempo and this may be an error.
+# Large tempo: song was recorded in half time and Spotify records it in 4/4
+```
+
+```{r eda_duration}
+spotify %>% 
+  filter(duration_s < 2) %>% 
+  select(name, artists, duration_s) %>% 
+  arrange(desc(duration_s))
+# Human by Anggun is not this slow
+```
+
+```{r eda_timesig}
+spotify %>% 
+  filter(time_signature < 1) %>% 
+  select(name, artists, time_signature) %>% 
+  arrange(desc(time_signature))
+```
+
+```{r}
+spotify %>% 
+  filter(year < 1500) %>% 
+  select(name, artists, year) %>% 
+  arrange(desc(year))
+# There are ten songs without years. They actually have years so we have to manually add them.
+spotify_test <- spotify %>% 
+  mutate(
+    year = case_when(
+      (name %in% c("Jimmy Neutron", "My Heart")) & (artists == "iCizzle") ~ 2017,
+      (name %in% c("I Luv You", "I Am (Invincible)", "Flower Power", "Heard It Low", "Hangin On", "God Loves You", "You In My Life", "I Wonder")) & (artists == "iCizzle") ~ 2018,
+      TRUE ~ year
+    ),
+    duration_s = case_when(
+      (name %in% c("Human")) & (artists == "Anggun") ~ duration(198),
+      TRUE ~ duration_s
+    )
+  )
+```
+
+```{r}
+spotify_test %>% 
+  select(duration_s, artists, name) %>% 
+  filter(artists == "Anggun", name == "Human")
 ```
 
