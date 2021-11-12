@@ -21,13 +21,14 @@ spotify <- read_csv(here::here("data/tracks_features.csv"))
 spotify$artists <- str_replace_all(spotify$artists, "(\\[(\'|\"))|((\'|\")\\])", "")
 spotify$artists <- str_replace_all(spotify$artists, "\',", ",")
 spotify$artists <- str_replace_all(spotify$artists, " \'", " ")
+spotify$artists <- str_replace_all(spotify$artists, "\"", "")
 spotify$artist_ids <- str_replace_all(spotify$artist_ids, "(\\[(\'|\"))|((\'|\")\\])", "")
-spotify$artist_ids <- str_replace_all(spotify$artists, "\',", ",")
-spotify$artists_ids <- str_replace_all(spotify$artists, " \'", " ")
+spotify$artist_ids <- str_replace_all(spotify$artist_ids, "\',", ",")
+spotify$artists_ids <- str_replace_all(spotify$artist_ids, " \'", " ")
 spotify$release_date <- ymd(spotify$release_date)
+# Some of these are NA because they are coded in as just years. We can just use the year column and if we need months we will have to add a note.
 
 ```
-
 
 
 ```{r eda_numeric}
@@ -85,7 +86,8 @@ spotify %>%
   select(name, artists, year) %>% 
   arrange(desc(year))
 # There are ten songs without years. They actually have years so we have to manually add them.
-spotify_test <- spotify %>% 
+# We also corrected the duration of the incorrect song.
+spotify <- spotify %>% 
   mutate(
     year = case_when(
       (name %in% c("Jimmy Neutron", "My Heart")) & (artists == "iCizzle") ~ 2017,
@@ -100,8 +102,7 @@ spotify_test <- spotify %>%
 ```
 
 ```{r}
-spotify_test %>% 
-  select(duration_s, artists, name) %>% 
-  filter(artists == "Anggun", name == "Human")
+spotify %>% 
+  filter(artists == "BTS")
 ```
 

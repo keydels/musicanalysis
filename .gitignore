@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 .csv
+cred.py
+__pycache__
+.cache
+spotify_million_playlist_dataset/
+.vscode
