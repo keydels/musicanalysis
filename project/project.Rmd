@@ -14,19 +14,14 @@ library(lubridate)
 ```
 
 ```{r read_data, message=FALSE}
-spotify <- read_csv(here::here("data/tracks_features.csv"))
+spotify <- read_csv(here::here("data/chunks1-50.csv"))
 ```
 
 ```{r adjust_vars}
-spotify$artists <- str_replace_all(spotify$artists, "(\\[(\'|\"))|((\'|\")\\])", "")
-spotify$artists <- str_replace_all(spotify$artists, "\',", ",")
-spotify$artists <- str_replace_all(spotify$artists, " \'", " ")
-spotify$artists <- str_replace_all(spotify$artists, "\"", "")
-spotify$artist_ids <- str_replace_all(spotify$artist_ids, "(\\[(\'|\"))|((\'|\")\\])", "")
-spotify$artist_ids <- str_replace_all(spotify$artist_ids, "\',", ",")
-spotify$artists_ids <- str_replace_all(spotify$artist_ids, " \'", " ")
 spotify$release_date <- ymd(spotify$release_date)
 # Some of these are NA because they are coded in as just years. We can just use the year column and if we need months we will have to add a note.
+
+# need to create year column
 
 ```
 

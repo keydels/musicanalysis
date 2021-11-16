@@ -1,3 +1,3 @@
 # An Analysis of Spotify Songs and Their Data Across the Decades
 
-Note: data set was downloaded from [Kaggle](https://www.kaggle.com/rodolfofigueroa/spotify-12m-songs) and was compiled by Rodolfo Figueroa.
+Note: data set was downloaded from the [Spotify Million Playlist Challenge](https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge).
