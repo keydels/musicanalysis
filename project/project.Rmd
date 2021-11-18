@@ -97,7 +97,61 @@ spotify <- spotify %>%
 ```
 
 ```{r}
+##EDA
+install.packages("funModeling")
+install.packages("Hmisc")
+library(funModeling) 
+library(Hmisc)
+
+#EDA of the data as a whole
+glimpse(spotify)
+status(spotify)
+freq(spotify)
+plot_num(spotify)
+describe(spotify)
+
+##histogram and count for reference
+ggplot (data = spotify) +
+  geom_histogram (mapping = aes(x = loudness), binwidth = 0.1)
+
+spotify %>%
+  count(loudness)
+
+ggplot(data = spotify, mapping = aes(x = loudness, colour = explicit)) +
+  geom_freqpoly(binwidth = 0.1)
+
+#boxplots of variables to look for trends
+ggplot(data = spotify, mapping = aes(x = energy)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = popularity)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = danceability)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = key)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = loudness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = speechiness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = acousticness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = liveness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = valence)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = tempo)) +
+  geom_boxplot()
+
+
+```
+
+```{r}
+##EDA special characters, track_name
 spotify %>% 
-  filter(artists == "BTS")
+  select(track_name)
+
+##page 21, 70 with special characters. Only two track names, seems wrong?
+
+ 
 ```
 
