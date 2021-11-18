@@ -17,20 +17,14 @@ library(lubridate)
 my_files <- list.files(path=here::here("data/"), pattern="*.csv", full.names = TRUE)
 big_spotify <- read_csv(my_files)
 ```
+
 ```{r}
-spotify_release_year <- spotify %>%
- mutate(release_year = format(release_date, format = "%Y"))
+big_spotify <- big_spotify %>% 
+  mutate(year = substr(release_date, 1, 4),
+         duration_s = as.duration(duration) / 1000)
+
   
 ```
-
-```{r adjust_vars}
-spotify$release_date <- ymd(spotify$release_date)
-# Some of these are NA because they are coded in as just years. We can just use the year column and if we need months we will have to add a note.
-
-# need to create year column
-
-```
-
 
 ```{r eda_numeric}
 funs <- c(mean = mean, median = median, max = max, min = min)
@@ -41,15 +35,10 @@ spotify %>%
 # Go back to look at loudness, tempo, duration_ms, time_signature, year
 ```
 
-```{r}
-spotify <- spotify %>% 
-  mutate(duration_s = as.duration(duration_ms) / 1000)
-```
-
 ```{r eda_loudness}
-spotify %>% 
-  filter(loudness > 5) %>% 
-  select(name, artists, loudness) %>% 
+big_spotify %>% 
+  filter(loudness < -50) %>% 
+  select(track_name, artist_name, loudness) %>% 
   arrange(desc(loudness))
 # Some songs are silent
 # Some songs are so ridiculously loud (like TV static)
@@ -88,85 +77,72 @@ spotify %>%
   arrange(desc(year))
 # There are ten songs without years. They actually have years so we have to manually add them.
 # We also corrected the duration of the incorrect song.
-spotify <- spotify %>% 
-  mutate(
-    year = case_when(
-      (name %in% c("Jimmy Neutron", "My Heart")) & (artists == "iCizzle") ~ 2017,
-      (name %in% c("I Luv You", "I Am (Invincible)", "Flower Power", "Heard It Low", "Hangin On", "God Loves You", "You In My Life", "I Wonder")) & (artists == "iCizzle") ~ 2018,
-      TRUE ~ year
-    ),
-    duration_s = case_when(
-      (name %in% c("Human")) & (artists == "Anggun") ~ duration(198),
-      TRUE ~ duration_s
-    )
-  )
+
+# spotify <- spotify %>% 
+#   mutate(
+#     year = case_when(
+#       (name %in% c("Jimmy Neutron", "My Heart")) & (artists == "iCizzle") ~ 2017,
+#       (name %in% c("I Luv You", "I Am (Invincible)", "Flower Power", "Heard It Low", "Hangin On", "God Loves You", "You In My Life", "I Wonder")) & (artists == "iCizzle") ~ 2018,
+#       TRUE ~ year
+#     ),
+#     duration_s = case_when(
+#       (name %in% c("Human")) & (artists == "Anggun") ~ duration(198),
+#       TRUE ~ duration_s
+#     )
+#   )
 ```
 
 ```{r}
-##EDA
-install.packages("funModeling")
-install.packages("Hmisc")
 library(funModeling) 
 library(Hmisc)
 
+status(big_spotify)
+
 #EDA of the data as a whole
-glimpse(spotify)
-status(spotify)
-freq(spotify)
-plot_num(spotify)
-describe(spotify)
+ggplot (data = big_spotify) +
+  geom_histogram(mapping = aes(x = duration_s), binwidth = 10)
+
+
+```
+
+
+```{r}
 
 ##histogram and count for reference
-ggplot (data = spotify) +
+ggplot (data = big_spotify) +
   geom_histogram (mapping = aes(x = loudness), binwidth = 0.1)
 
 spotify %>%
   count(loudness)
 
-ggplot(data = spotify, mapping = aes(x = loudness, colour = explicit)) +
+ggplot(data = big_spotify, mapping = aes(x = loudness, colour = explicit)) +
   geom_freqpoly(binwidth = 0.1)
 
-#boxplots of variables to look for trends
-ggplot(data = spotify, mapping = aes(x = energy)) +
+#boxplots of big_spotify to look for trends
+ggplot(data = big_spotify, mapping = aes(x = energy)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = popularity)) +
+ggplot(data = big_spotify, mapping = aes(x = popularity)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = danceability)) +
+ggplot(data = big_spotify, mapping = aes(x = danceability)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = key)) +
+ggplot(data = big_spotify, mapping = aes(x = key)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = loudness)) +
+ggplot(data = big_spotify, mapping = aes(x = loudness)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = speechiness)) +
+ggplot(data = big_spotify, mapping = aes(x = speechiness)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = acousticness)) +
+ggplot(data = big_spotify, mapping = aes(x = acousticness)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = liveness)) +
+ggplot(data = big_spotify, mapping = aes(x = liveness)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = valence)) +
+ggplot(data = big_spotify, mapping = aes(x = valence)) +
   geom_boxplot()
-ggplot(data = spotify, mapping = aes(x = tempo)) +
+ggplot(data = big_spotify, mapping = aes(x = tempo)) +
   geom_boxplot()
 
 
 ```
 
-```{r}
-##EDA special characters, track_name
-spotify %>% 
-  select(track_name)
-
-##page 21, 70 with special characters. Only two track names, seems wrong?
-
- 
-```
-
-```{r}
-spotify_release_year %>%
-  filter (artist_name == "Miley Cyrus") %>%
-  ggplot() +
-  geom_histogram(mapping = aes(x = release_year))
-```
 
 
 
