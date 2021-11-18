@@ -11,18 +11,6 @@ ui <- fluidPage(
         inputId = "artist",
         label = "Search for an artist"
       )
-      # radioButtons(
-      #   inputId = "stat",
-      #   label = "Choose a statistic",
-      #   choices = c("Disc Number" = "disc_number",
-      #               "Popularity" = "popularity",
-      #               "Track Number" = "track_number",
-      #               "Duration" = "duration",
-      #               "Danceability" = "danceability",
-      #               "Loudness" = "loudness",
-      #               "Tempo" = "tempo",
-      #               "Time Signature" = "time_signature")
-      # )
     ),
     mainPanel(
       plotOutput(outputId = "energy")
