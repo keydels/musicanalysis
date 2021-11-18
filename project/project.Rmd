@@ -18,7 +18,7 @@ spotify <- read_csv(here::here("data/chunks1-50.csv"))
 ```
 ```{r}
 spotify_release_year <- spotify %>%
-  mutate(release_year = format(release_date, format = "%Y"))
+ mutate(release_year = format(release_date, format = "%Y"))
   
 ```
 
@@ -108,8 +108,16 @@ spotify %>%
 
 ```{r}
 spotify_release_year %>%
-  filter (artist_name == "BTS") %>%
+  filter (artist_name == "Miley Cyrus") %>%
   ggplot() +
-  geom_point(mapping = aes(x = danceability, y = release_year))
+  geom_histogram(mapping = aes(x = release_year))
 ```
+```{r}
+spotify_release_year %>%
+  filter (artist_name == "Miley Cyrus") %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = release_year))
+```
+```
+
 
