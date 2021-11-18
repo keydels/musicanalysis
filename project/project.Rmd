@@ -112,12 +112,7 @@ spotify_release_year %>%
   ggplot() +
   geom_histogram(mapping = aes(x = release_year))
 ```
-```{r}
-spotify_release_year %>%
-  filter (artist_name == "Miley Cyrus") %>%
-  ggplot() +
-  geom_histogram(mapping = aes(x = release_year))
-```
-```
+
+
 
 
