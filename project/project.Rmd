@@ -14,7 +14,8 @@ library(lubridate)
 ```
 
 ```{r read_data, message=FALSE}
-spotify <- read_csv(here::here("data/chunks1-50.csv"))
+my_files <- list.files(path=here::here("data/"), pattern="*.csv", full.names = TRUE)
+big_spotify <- read_csv(my_files)
 ```
 
 ```{r adjust_vars}
