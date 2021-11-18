@@ -17,6 +17,11 @@ library(lubridate)
 my_files <- list.files(path=here::here("data/"), pattern="*.csv", full.names = TRUE)
 big_spotify <- read_csv(my_files)
 ```
+```{r}
+spotify_release_year <- spotify %>%
+ mutate(release_year = format(release_date, format = "%Y"))
+  
+```
 
 ```{r adjust_vars}
 spotify$release_date <- ymd(spotify$release_date)
@@ -155,4 +160,14 @@ spotify %>%
 
  
 ```
+
+```{r}
+spotify_release_year %>%
+  filter (artist_name == "Miley Cyrus") %>%
+  ggplot() +
+  geom_histogram(mapping = aes(x = release_year))
+```
+
+
+
 
