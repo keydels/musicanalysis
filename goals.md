@@ -6,9 +6,12 @@
 * Clear explanation of what we did and how to use the app
 * Finish data creation
 * Extra instrumentalness column
+* Explain potential problems
+  * Some artists' names are spelled differently
+  * Errors in Spotify data
 
 ## Ian
-* Starting a shiny app
+* Starting a shiny app (DONE)
 * Import multiple datasets? (DONE)
 * Look up what the variables actually measure
 
@@ -19,7 +22,7 @@
 
 ## Sarba
 * Make new variable in dataset with just the year (DONE)
-* Remove duplicates
+* Remove duplicates in the data
 
 
 # Learning Objectives
@@ -28,7 +31,7 @@ How can we show that we are meeting the objectives?
 
 ## Import, manage, and clean data
 
-We have shown we can import data and manage it with the `tidyverse`. We will each need to show more on cleaning data because this data is pretty clean.
+We have shown we can import data and manage it with the `{tidyverse}`. We will each need to show more on cleaning data because this data is pretty clean.
 
 ## Create graphical displays and numerical summaries of data for exploratory analysis and presentations
 

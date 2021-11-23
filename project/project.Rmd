@@ -2,6 +2,7 @@
 title: "The Project"
 author: "Ian Curtis, Stacy Keydel, Sarba Uprety"
 output: html_document
+date: 2021-11-02
 ---
 
 ```{r setup, include=FALSE}
@@ -143,7 +144,18 @@ ggplot(data = big_spotify, mapping = aes(x = tempo)) +
 
 ```
 
+```{r}
+funs <- c(mean = mean, median = median, max = max, min = min)
+big_spotify %>% 
+  select(where(is.numeric)) %>% 
+  map_df(~ funs %>%
+           map(exec, .x), .id = "var")
+```
 
+```{r}
+big_spotify %>% 
+  summarise(min1 = min(release_date), max1 = max(release_date, min2 = min(year), max2 = max(year)))
+```
 
 
 
