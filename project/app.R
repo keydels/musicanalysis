@@ -3,6 +3,12 @@ library(tidyverse)
 
 my_files <- list.files(path=here::here("data/"), pattern="*.csv", full.names = TRUE)
 big_spotify <- read_csv(my_files)
+big_spotify <- big_spotify %>% 
+  mutate(year = substr(release_date, 1, 4),
+         duration_s = as.duration(duration) / 1000)
+spotify_nodup <- big_spotify %>% 
+  distinct(track_uri, .keep_all = TRUE)
+spotify_nodup <- spotify_nodup[-20]
 
 ui <- fluidPage(
   sidebarLayout(
@@ -24,12 +30,13 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  output$energy <- renderPlot({
+  observeEvent(input$generate, {output$energy <- renderPlot({
     req(input$artist)
-    big_spotify %>% 
+    spotify_nodup %>% 
       filter(artist_name == input$artist) %>% 
       ggplot(aes(x = energy)) +
       geom_histogram(binwidth = 0.05, color = "white", fill = "black")
+  })
   })
 }
 
