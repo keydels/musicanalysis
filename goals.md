@@ -5,7 +5,16 @@
 * Easy for users to use
 * Clear explanation of what we did and how to use the app
 * Finish data creation
-* Extra instrumentalness column
+
+* 11/30: Correct years (and maybe other variables)
+
+## Shiny
+* Display summary stats by artist
+  * Mean/median of all the variables
+  * Total songs
+  * Total albums
+  * Genre? (later on, will have to access API again)
+* Graphs of variables (have a user choose the variable?)
 * Explain potential problems
   * Some artists' names are spelled differently
   * Errors in Spotify data
@@ -13,16 +22,20 @@
 ## Ian
 * Starting a shiny app (DONE)
 * Import multiple datasets? (DONE)
-* Look up what the variables actually measure
+* Look up what the variables actually measure (DONE)
+* Post on GitHub (two issues: loading data, dropdown menu)
+* Mess around with Shiny App
 
 ## Stacy
 * Start running eda again (DONE)
 * Looking at random characters (DONE)
-* Adding comments to file to explain our decisions
+* Mess around with Shiny App
 
 ## Sarba
 * Make new variable in dataset with just the year (DONE)
-* Remove duplicates in the data
+* Remove duplicates in the data (DONE)
+* Adding comments to file to explain our decisions
+* Start messing around with the Shiny App
 
 
 # Learning Objectives
