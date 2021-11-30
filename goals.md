@@ -18,6 +18,12 @@
 * Explain potential problems
   * Some artists' names are spelled differently
   * Errors in Spotify data
+* Dropdown menu to choose two stats to have graphed?
+* Basic stats (on the welcome page)
+* Colors
+* Loading data from and external source? (Can't load our entire data every time)
+* `{ggplot}` customization
+* Publish app online!
 
 ## Ian
 * Starting a shiny app (DONE)
