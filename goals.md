@@ -4,9 +4,8 @@
 * Have an efficient Shiny app (searchable)
 * Easy for users to use
 * Clear explanation of what we did and how to use the app
-* Finish data creation
-
-* 11/30: Correct years (and maybe other variables)
+* Create function for boxplots?
+* Add new fun graphs?
 
 ## Shiny
 * Display summary stats by artist
@@ -18,8 +17,6 @@
 * Explain potential problems
   * Some artists' names are spelled differently
   * Errors in Spotify data
-* Dropdown menu to choose two stats to have graphed?
-* Basic stats (on the welcome page)
 * Colors
 * Loading data from and external source? (Can't load our entire data every time)
 * `{ggplot}` customization
@@ -29,18 +26,20 @@
 * Starting a shiny app (DONE)
 * Import multiple datasets? (DONE)
 * Look up what the variables actually measure (DONE)
-* Post on GitHub (two issues: loading data, dropdown menu)
-* Mess around with Shiny App
+* Post on GitHub (two issues: loading data, dropdown menu) (DONE)
+* Reorganize the server
 
 ## Stacy
 * Start running eda again (DONE)
 * Looking at random characters (DONE)
 * Mess around with Shiny App
+* Customize ggplot graphs
+* Theme of the app
 
 ## Sarba
 * Make new variable in dataset with just the year (DONE)
 * Remove duplicates in the data (DONE)
-* Adding comments to file to explain our decisions
+* Adding comments to file to explain our decisions (Partially done)
 * Start messing around with the Shiny App
 
 
