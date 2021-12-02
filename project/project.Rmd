@@ -84,6 +84,7 @@ spotify %>%
 ggplot (data = spotify) +
   geom_histogram(mapping = aes(x = duration_s), binwidth = 10)
 
+# Selecting the columns : names, artists and duration_s that have a duration of more than 2 seconds.
 spotify %>% 
   filter(duration_s < 2) %>% 
   select(name, artists, duration_s) %>% 
@@ -93,6 +94,7 @@ spotify %>%
 ```
 
 ```{r eda_year}
+# Selecting the columns : names, artists and duration_s that have a duration of more than 2 seconds.
 spotify %>% 
   filter(year < 1500) %>% 
   select(name, artists, year) %>% 
@@ -102,6 +104,7 @@ spotify %>%
 
 
 ```{r fun_explorations}
+# Visualization of the data
 ggplot(data = spotify, mapping = aes(x = loudness, colour = explicit)) +
   geom_freqpoly(binwidth = 0.1)
 ```

@@ -13,12 +13,11 @@
   * Total songs
   * Total albums
   * Genre? (later on, will have to access API again)
-* Graphs of variables (have a user choose the variable?)
+* Graphs of variables (have a user choose the variable?) (DONE)
 * Explain potential problems
   * Some artists' names are spelled differently
   * Errors in Spotify data
-* Shiny colors
-* Loading data from and external source? (Can't load our entire data every time)
+* Shiny colors (DONE)
 * `{ggplot}` customization
 * Publish app online!
 
@@ -29,18 +28,23 @@
 * Post on GitHub (two issues: loading data, dropdown menu) (DONE)
 * Reorganize the server (DONE)
 * Function for graphs (DONE)
+* New tab for table of variables
+* Edit table in readme
+* Look at publishing
 
 ## Stacy
 * Start running eda again (DONE)
 * Looking at random characters (DONE)
-* Customize ggplot graphs
-* Theme of the app
+* Customize ggplot graphs (Moved to Sarba)
+* Theme of the app (DONE)
+* Customize text on app
+* Color of Button
 
 ## Sarba
 * Make new variable in dataset with just the year (DONE)
 * Remove duplicates in the data (DONE)
 * Adding comments to file to explain our decisions (Partially done)
-* Start looking at summary statistics for main page in app
+* ggplot customization
 
 
 # Learning Objectives
