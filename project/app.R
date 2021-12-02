@@ -2,9 +2,10 @@
 library(shiny)
 library(tidyverse)
 library(lubridate)
+#library(shinybusy)
 
 # Load testing data (one file the folder)
-data <- read_csv(here::here("data/chunks1-50.csv"))
+data <- read_csv(here::here("data/chunks756-772.csv"))
 # Add column for just the release year and track duration in seconds
 # Also removes duplicates
 data <- data %>%
@@ -13,7 +14,7 @@ data <- data %>%
   distinct(track_uri, .keep_all = TRUE) %>%
   arrange(artist_name)
 
-# Create list of possible stats to choose from for the graphs
+# Create ordered list of possible stats to choose from for the graphs
 stats <- sort(c("Disc Number" = "disc_number",
            "Popularity" = 'popularity',
            'Track Number' = 'track_number',
@@ -80,8 +81,8 @@ ui <- fluidPage(
         tabPanel("Visualizations", br(), textOutput(outputId = "total_tracks"),
                  br(), textOutput("disclaimer"),
                  fluidRow(
-                   column(6, plotOutput(outputId = "energy")),
-                   column(6, plotOutput(outputId = "tempo"))
+                   column(6, plotOutput(outputId = "left_graph")),
+                   column(6, plotOutput(outputId = "right_graph"))
                  )
         )
       
@@ -102,73 +103,82 @@ server <- function(input, output, session) {
   
   
   # Server-side rendering for the visualizations page
-  lengthArtist <- function(artist) {
-    artist <- data %>% 
-      filter(artist_name == artist) %>% 
-      summarise(n = n())
-    length <- artist[1]
-  }
   
-  # Left Graph (on visualizations page)
-  observeEvent(input$generate, {output$energy <- renderPlot({
-    req(input$artist)
-    req(input$stat_left)
-    req(input$generate)
+  # Create empty holder for reactive values
+  reactives <- reactiveValues()
+  
+  # Waits for the action button, then subsets data, prepares messages, and stores 
+  # reactive values for use later
+  observeEvent(input$generate, {
     
-    if (input$stat_left == 'explicit'){ 
-           data %>%
-             filter(artist_name == input$artist) %>%
-             ggplot(aes_string(x = input$stat_left)) +
-             geom_bar(fill = "red4") +
-             xlab(paste(str_to_sentence(input$stat_left), "for songs by", input$artist))
-    }
-    else {
-      data %>%
-        filter(artist_name == input$artist) %>%
-        ggplot(aes_string(x = input$stat_left)) +
-        geom_histogram(color = "black", fill = "red4") +
-        xlab(paste(str_to_sentence(input$stat_left), "for songs by", input$artist))  
-      }
-  })
-  })
-  
-  # Right Graph (on visualizations page)
-  observeEvent(input$generate, {output$tempo <- renderPlot({
-    req(input$artist)
-    req(input$stat_right)
-    req(input$generate)
     
-    if (input$stat_right == 'explicit'){ 
-      data %>%
-        filter(artist_name == input$artist) %>%
-        ggplot(aes_string(x = input$stat_right)) +
-        geom_bar(fill = "deepskyblue4")} +
-        xlab(paste(str_to_sentence(input$stat_right), "for songs by", input$artist))
-    else {
-      data %>%
-        filter(artist_name == input$artist) %>%
-        ggplot(aes_string(x = input$stat_right)) +
-        geom_histogram(color = "black", fill = "deepskyblue4", bins = 20) +
-        xlab(paste(str_to_sentence(input$stat_right), "for songs by", input$artist))
-    }
-  })
-  })
-  
-  
-  
-  observeEvent(input$generate, output$total_tracks <- renderText({
-    paste("There are", lengthArtist(input$artist), "total tracks for", input$artist) 
-  })
-  )
-  
-  observeEvent(input$generate, output$disclaimer <- renderText({
-    "Please be aware that some tracks may have been automatically removed due to 
-          incorrect data. Furthermore, note that the total number of track for some 
+    subset <- data %>% 
+      select(artist_name, input$stat_left, input$stat_right) %>% 
+      filter(artist_name == input$artist)
+    
+    n_tracks <- paste("There are", nrow(subset), "total tracks for", input$artist)
+    disclaimer <- "Please be aware that some tracks may have been automatically removed due to 
+          incorrect data. Furthermore, note that the total number of tracks for some 
           artists may be overestimated. Some artists have duplicate tracks as 
           some tracks are released on multiple different albums (e.g., a regular and a 
           deluxe album)."
+    
+    reactives$total_tracks = n_tracks
+    reactives$sub_data = subset
+    reactives$disclaimer = disclaimer
+    reactives$lstat = input$stat_left
+    reactives$rstat = input$stat_right
+    reactives$artist = input$artist
+    
+  
   })
-  )
+  
+  # Create a plot based on inputted statistic and artist
+  makeGraph <- function(stat, artist, fill_color) {
+    if (stat %in% c('explicit', 'disc_number', 'track_number', 'key', 'mode', 
+                         'year', 'time_signature')) {
+      reactives$sub_data %>% 
+      ggplot(aes_string(x = stat)) +
+        geom_bar(color = "black", fill = fill_color) +
+        xlab(paste(str_to_sentence(stat), "for songs by", artist))
+    }
+    else {
+      if (stat %in% c('popularity', 'loudness')) {binwidth <- 5}
+      else if (stat == 'tempo') {binwidth <- 10}
+      else if (stat == 'duration_s') {binwidth <- 30}
+      else {binwidth <- 0.1}
+      
+      reactives$sub_data %>% 
+      ggplot(aes_string(x = stat)) +
+        geom_histogram(color = "black", fill = fill_color, binwidth = binwidth) +
+        xlab(paste(str_to_sentence(stat), "for songs by", artist))
+    }
+  }
+  
+  # Output for the left graph on Visualizations page
+  output$left_graph <- renderPlot({
+    req(reactives$lstat)
+    makeGraph(reactives$lstat, reactives$artist, 'red4')
+    
+  })
+  
+  # Output for the right graph on Visualizations page
+  output$right_graph <- renderPlot({
+    req(reactives$rstat)
+    makeGraph(reactives$rstat, reactives$artist, 'deepskyblue4')
+  })
+
+
+  # States total number of tracks for an artist
+  output$total_tracks <- renderText({
+     reactives$total_tracks
+  })
+
+  # States that there are likely to be some errors
+  output$disclaimer <- renderText({
+    reactives$disclaimer
+  })
+  
   
   
 }
