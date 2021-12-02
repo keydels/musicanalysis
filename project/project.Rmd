@@ -127,7 +127,3 @@ ggplot(data = spotify, mapping = aes(x = liveness)) +
 ggplot(data = spotify, mapping = aes(x = valence)) +
   geom_boxplot()
 ```
-
-
-
-
