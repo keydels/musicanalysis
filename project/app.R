@@ -2,6 +2,8 @@
 library(shiny)
 library(tidyverse)
 library(lubridate)
+library(shinythemes)
+library(magick)
 #library(shinybusy)
 
 # Load testing data (one file the folder)
@@ -34,6 +36,9 @@ stats <- sort(c("Disc Number" = "disc_number",
            'Release Year' = 'year',
            'Track Duration (sec)' = 'duration_s'))
 
+# Load headphones image
+headphones <- image_read(here::here('headphones.jpg'))
+
 # # Load all data (takes a long time)
 # my_files <- list.files(path=here::here("data/"), pattern="*.csv", full.names = TRUE)
 # data <- read_csv(my_files)
@@ -45,7 +50,7 @@ stats <- sort(c("Disc Number" = "disc_number",
 #   distinct(track_uri, .keep_all = TRUE) %>%
 #   arrange(artist_name)
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinytheme('cyborg'),
   title = "Visualiztions of Spotify Artist Data",
   br(),
   
@@ -76,15 +81,23 @@ ui <- fluidPage(
     fluidRow(
       column(12,
       tabsetPanel(
-        tabPanel("Basic Stats", br(), textOutput("welcome")),
+        tabPanel("Welcome", br(), 
+                 fluidRow(
+                   column(6, offset = 2, imageOutput('headphones'))), 
+                 fluidRow(
+                   column(12, textOutput("welcome"))
+                 )),
         
         tabPanel("Visualizations", br(), textOutput(outputId = "total_tracks"),
-                 br(), textOutput("disclaimer"),
+                 br(), textOutput("disclaimer"), br(),
                  fluidRow(
                    column(6, plotOutput(outputId = "left_graph")),
                    column(6, plotOutput(outputId = "right_graph"))
                  )
-        )
+        ),
+        
+        tabPanel("Variables"),
+        tabPanel("About")
       
       )
   
@@ -100,6 +113,16 @@ server <- function(input, output, session) {
   output$welcome <- renderText({
     paste("Welcome to the analysis page for", input$artist, "!")
   })
+  
+  output$headphones <- renderImage({
+    tmpfile <- headphones %>%
+      image_resize('500') %>%
+      image_write(tempfile(fileext='jpg'), format = 'jpg')
+    
+    list(src = tmpfile, contentType = "image/jpeg")
+  }, deleteFile = FALSE)
+  
+  
   
   
   # Server-side rendering for the visualizations page
@@ -158,14 +181,14 @@ server <- function(input, output, session) {
   # Output for the left graph on Visualizations page
   output$left_graph <- renderPlot({
     req(reactives$lstat)
-    makeGraph(reactives$lstat, reactives$artist, 'red4')
+    makeGraph(reactives$lstat, reactives$artist, 'salmon2')
     
   })
   
   # Output for the right graph on Visualizations page
   output$right_graph <- renderPlot({
     req(reactives$rstat)
-    makeGraph(reactives$rstat, reactives$artist, 'deepskyblue4')
+    makeGraph(reactives$rstat, reactives$artist, 'azure4')
   })
 
 
