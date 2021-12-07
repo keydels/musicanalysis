@@ -51,6 +51,11 @@ spotify %>%
   map_df(~ funs %>%
            map(exec, .x), .id = "var")
 ```
+```{r}
+spotify %>% 
+  filter(year > 0001) %>% 
+  summarise(min(year))
+```
 
 ```{r eda_loudness}
 ##histogram and count for reference
@@ -130,3 +135,6 @@ ggplot(data = spotify, mapping = aes(x = liveness)) +
 ggplot(data = spotify, mapping = aes(x = valence)) +
   geom_boxplot()
 ```
+
+
+
