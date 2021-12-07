@@ -3,48 +3,50 @@
 ## Overall
 * Have an efficient Shiny app (searchable)
 * Easy for users to use
-* Clear explanation of what we did and how to use the app
+* Explanation of what we did and how to use the app
 
 ## Shiny
 * Create function for boxplots?
-* Add new fun graphs?
-* Display summary stats by artist
+* Display summary stats by artist?
   * Mean/median of all the variables
   * Total songs
   * Total albums
   * Genre? (later on, will have to access API again)
-* Graphs of variables (have a user choose the variable?) (DONE)
-* Explain potential problems
-  * Some artists' names are spelled differently
-  * Errors in Spotify data
+* Graphs of variables (have a user choose the variable) (DONE)
+* Explain potential problems (DONE)
+  * Some artists' names are spelled differently (DONE)
+  * Errors in Spotify data (DONE)
 * Shiny colors (DONE)
 * `{ggplot}` customization
-* Publish app online!
+* Publish app online
 
 ## Ian
-* Starting a shiny app (DONE)
 * Import multiple datasets? (DONE)
 * Look up what the variables actually measure (DONE)
 * Post on GitHub (two issues: loading data, dropdown menu) (DONE)
 * Reorganize the server (DONE)
 * Function for graphs (DONE)
 * New tab for table of variables
-* Edit table in readme
+* Edit table in readme (DONE)
 * Look at publishing
+* Feather (DONE)
 
 ## Stacy
-* Start running eda again (DONE)
+* Start running eda  (DONE)
 * Looking at random characters (DONE)
-* Customize ggplot graphs (Moved to Sarba)
+* Customize ggplot graphs (Partially done, moved to Sarba)
 * Theme of the app (DONE)
 * Customize text on app
 * Color of Button
+* Summary stats/homepage
 
 ## Sarba
 * Make new variable in dataset with just the year (DONE)
 * Remove duplicates in the data (DONE)
-* Adding comments to file to explain our decisions (Partially done)
+* Some EDA (DONE)
+* Adding comments to file to explain our decisions (DONE)
 * ggplot customization
+* Summary stats?
 
 
 # Learning Objectives
