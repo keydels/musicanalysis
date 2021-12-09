@@ -1,0 +1,141 @@
+---
+title: "Exploratory Data Analysis"
+author: "Ian Curtis, Stacy Keydel, Sarba Uprety"
+output: github_document
+date: 2021-11-02
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_packages, message=FALSE}
+# Load packages
+library(tidyverse)
+library(lubridate)
+library(funModeling)
+library(Hmisc)
+
+```
+
+```{r read_data, message=FALSE}
+my_files <- list.files(path=here::here("original_data/"), pattern="*.csv", full.names = TRUE)
+spotify <- read_csv(my_files)
+
+# Adds a column for just the year, the track duration in seconds, and removes duplicates
+spotify <- spotify %>% 
+  mutate(year = substr(release_date, 1, 4),
+         duration_s = as.duration(duration) / 1000) %>% 
+  distinct(track_uri, .keep_all = TRUE)
+
+# Remove empty column
+spotify <- spotify[-20]
+```
+
+```{r describe_vars}
+# Gives simple summary stats of each variable such as number of missing values, mean, percentiles, and 5 max and 5 min
+descriptions <- describe(spotify)
+descriptions[8]
+```
+
+```{r}
+# Gives number of 0 values, type of data, and number of unique values
+as_tibble(status(spotify))
+```
+
+```{r summary_stats}
+# Creates a tibble of basic summary statistics for all numerical variables
+funs <- c(mean = mean, median = median, max = max, min = min, sd = sd)
+spotify %>% 
+  select(where(is.numeric) & !duration_s) %>% 
+  map_df(~ funs %>%
+           map(exec, .x), .id = "var")
+```
+
+```{r}
+spotify %>% 
+  filter(year < 0100) %>% 
+  summarise(min(year))
+```
+
+```{r eda_loudness}
+##histogram and count for reference
+ggplot (data = spotify) +
+  geom_histogram (mapping = aes(x = loudness), binwidth = 0.1)
+
+spotify %>% 
+  filter(loudness < -50) %>% 
+  select(track_name, artist_name, loudness) %>% 
+  arrange(desc(loudness))
+# Some songs are silent
+# Some songs are so ridiculously loud (like TV static)
+```
+
+```{r eda_tempo}
+# Boxplot of the tempo
+ggplot(data = spotify, mapping = aes(x = tempo)) +
+  geom_boxplot()
+
+spotify %>% 
+  filter(tempo > 200) %>% 
+  select(track_name, artist_name, tempo) %>% 
+  arrange(desc(tempo))
+
+# 0 tempo: some are short or have a mess of sound. Some do have a tempo and this may be an error.
+# Large tempo: song was recorded in half time and Spotify records it in 4/4
+```
+
+```{r eda_duration}
+#EDA of the duration of tracks
+ggplot (data = spotify) +
+  geom_histogram(mapping = aes(x = duration_s), binwidth = 10)
+
+# Selecting the columns : names, artists and duration_s that have a duration of more than 2 seconds.
+spotify %>% 
+  filter(duration_s < 2) %>% 
+  select(track_name, artist_name, duration_s) %>% 
+  arrange(desc(duration_s))
+# Some data are incorrect here; tracks are not this short
+# Some songs are really this short
+```
+
+```{r eda_year}
+# Selecting the columns : names, artists and duration_s that have a duration of more than 2 seconds.
+spotify %>% 
+  filter(year < 1500) %>% 
+  select(track_name, artist_name, year) %>% 
+  arrange(desc(year))
+# There are some songs without years. 
+```
+
+
+```{r fun_explorations}
+# Visualization of the data
+ggplot(data = spotify, mapping = aes(x = loudness, colour = explicit)) +
+  geom_freqpoly(binwidth = 0.1)
+```
+
+```{r}
+#boxplots of spotify to look for trends
+ggplot(data = spotify, mapping = aes(x = energy)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = popularity)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = danceability)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = key)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = loudness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = speechiness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = acousticness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = liveness)) +
+  geom_boxplot()
+ggplot(data = spotify, mapping = aes(x = valence)) +
+  geom_boxplot()
+```
+
+
+

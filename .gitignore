@@ -6,3 +6,6 @@ cred.py
 __pycache__
 .cache
 .vscode
+spotify.feather
+spotify_testing.feather
+rsconnect/
