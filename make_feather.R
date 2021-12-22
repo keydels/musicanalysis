@@ -7,7 +7,7 @@ spotify <- read_csv(my_files)
 
 # Adds a column for just the year, the track duration in seconds, and removes duplicates
 spotify <- spotify %>% 
-  mutate(year = substr(release_date, 1, 4),
+  mutate(year = as.factor(substr(release_date, 1, 4)),
          duration_s = as.duration(duration) / 1000) %>% 
   distinct(track_uri, .keep_all = TRUE)
 
