@@ -9,3 +9,7 @@ __pycache__
 spotify.feather
 spotify_testing.feather
 rsconnect/
+original_data/
+make_feather.R
+*.ipynb
+data/

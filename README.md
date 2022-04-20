@@ -1,5 +1,7 @@
 # An Analysis of Spotify Songs and Their Data Across the Decades
 
+Note that the code in the repo may not work as certain data is not public due to Spotify Developer Terms of Service.
+
 The original data set was downloaded from the [Spotify Million Playlist Challenge](https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge). The dataset was then expanded through the Spotify Web API, using Python. This expansion is still in progress; for instance, there are few tracks from 2021. 
 
 There is some odd data; for instance, sometimes `year` has a value of `0000`, a `tempo` of 0, or a `loudness` of -60 (silent). However, these are not necessarily incorrect as some tracks are so short, a tempo cannot be determined and some tracks are actually tracks of silence. As such, we have not removed all zeros nor "corrected" any values. 
